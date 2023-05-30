@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 
 
+# layer 2개짜리 신경망이다.
 class MLP(torch.nn.Module):
     def __init__(self, out_features, in_features, hidden_layer_size, output_nonlinearity):
         super().__init__()
@@ -22,10 +23,15 @@ class KnapsackMLP(MLP):
     """
 
     def __init__(self, num_variables, reduced_embed_dim, embed_dim=4096, **kwargs):
+        # 신경망의 입력 크기 : 변수의 수 * 임베딩 크기
+        # 신경망의 출력 크기 : 변수의 수
+        # 비선형화 함수 : sigmoid
         super().__init__(in_features=num_variables * reduced_embed_dim, out_features=num_variables,
                          output_nonlinearity='sigmoid', **kwargs)
+        # 임베딩 레이어는 별도로 지정되지 않을 시 기본 값인 4096 크기의 입력을 받아서 지정된 reduced_embed_dim 크기의 출력으로 변환한다.
         self.reduce_embedding_layer = nn.Linear(in_features=embed_dim, out_features=reduced_embed_dim)
 
+    # 임베딩 후 학습 수행
     def forward(self, x):
         bs = x.shape[0]
         x = self.reduce_embedding_layer(x.float())
