@@ -274,9 +274,14 @@ def knapsack_round(y_denorm, constraints, knapsack_capacity):
 
 
 def load_with_default_yaml(path):
+    # 현재 작업 경로 지정 (Current Work Directory)
     base_path = os.getcwd()
+    # 지정한 문제의 지정한 메소드에 대해서 yaml 열기
+    # 예를 들자면 experiments/knapsack/base.yaml 등
     with open(os.path.join(base_path, path), 'r') as stream:
         param_dict = yaml.safe_load(stream)
+        
+    # default_yaml은 부모 yaml을 지정하고 있다. base.yaml이 아닌 파일들이 갖고 있다.
     default_yaml = param_dict.pop('__import__', None)
     if default_yaml is not None:
         with open(os.path.join(base_path, default_yaml), 'r') as stream:
@@ -284,7 +289,7 @@ def load_with_default_yaml(path):
         param_dict = merge(param_dict, default_dict)
     return param_dict
 
-
+# destination과 source에 동일하게 들어있는 값들은 전부 source의 값으로 덮어씌워서 destination을 출력한다.
 def merge(source, destination):
     for key, value in source.items():
         if isinstance(value, dict):
