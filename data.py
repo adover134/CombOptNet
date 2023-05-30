@@ -10,7 +10,7 @@ from utils.constraint_generation import sample_constraints
 from utils.utils import compute_normalized_solution, save_pickle, load_pickle, AvgMeters, check_equal_ys, \
     solve_unconstrained, load_with_default_yaml, save_dict_as_one_line_csv
 
-
+# knapsack 문제와 static_constraint 문제 중, 주어진 dataset_type에 해당하는 dataloader를 이용해서 dataset을 load한 후 반환한다.
 def load_dataset(dataset_type, base_dataset_path, **dataset_params):
     dataset_path = os.path.join(base_dataset_path, dataset_type)
     dataset_loader_dict = dict(static_constraints=static_constraint_dataloader, knapsack=knapsack_dataloader)
@@ -38,10 +38,14 @@ def static_constraint_dataloader(dataset_path, dataset_specification, num_gt_var
     return (train_iterator, test_iterator), datasets['metadata']
 
 
+# loader_params는 batch size와 shuffle 여부를 갖는다.
 def knapsack_dataloader(dataset_path, loader_params):
+    
+    # 변수 별 lower bound와 upper bound들의 조합이다.
     variable_range = dict(lb=0, ub=1)
     num_variables = 10
 
+    # 훈련 데이터 정보들을 불러온다.
     train_encodings = np.load(os.path.join(dataset_path, 'train_encodings.npy'))
     train_ys = compute_normalized_solution(np.load(os.path.join(dataset_path, 'train_sols.npy')), **variable_range)
     train_dataset = list(zip(train_encodings, train_ys))
