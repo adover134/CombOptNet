@@ -45,13 +45,14 @@ def knapsack_dataloader(dataset_path, loader_params):
     variable_range = dict(lb=0, ub=1)
     num_variables = 10
 
-    # 훈련 데이터 정보들을 불러온다.
+    # 훈련 데이터 정보들을 불러온다. encodings가 features, ys가 label 값이다.
     train_encodings = np.load(os.path.join(dataset_path, 'train_encodings.npy'))
     train_ys = compute_normalized_solution(np.load(os.path.join(dataset_path, 'train_sols.npy')), **variable_range)
     train_dataset = list(zip(train_encodings, train_ys))
     training_set = Dataset(train_dataset)
     train_iterator = data.DataLoader(training_set, **loader_params)
 
+    # 테스트 데이터 정보들을 불러온다. encodings가 features, ys가 label 값이다.
     test_encodings = np.load(os.path.join(dataset_path, 'test_encodings.npy'))
     test_ys = compute_normalized_solution(np.load(os.path.join(dataset_path, 'test_sols.npy')), **variable_range)
     test_dataset = list(zip(test_encodings, test_ys))
