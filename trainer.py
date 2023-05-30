@@ -9,6 +9,7 @@ from utils.utils import loss_from_string, optimizer_from_string, set_seed, AvgMe
 
 
 def get_trainer(trainer_name, **trainer_params):
+    # MLPTrainer는 Knapsack과 RandomConstraint가 별도로 있다. models/models.py 파일에 있다.
     trainer_dict = dict(MLPTrainer=MLPBaselineTrainer,
                         KnapsackConstraintLearningTrainer=KnapsackConstraintLearningTrainer,
                         RandomConstraintLearningTrainer=RandomConstraintLearningTrainer)
