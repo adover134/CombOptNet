@@ -1,8 +1,10 @@
 import os
 import sys
 
+# ray는 멀티 프로세싱에 사용되는 라이브러리이다.
 import ray
 
+# 아래 항목들은 프로젝트의 .py 파일들에서 불러온 함수들이다.
 from data import load_dataset
 from trainer import get_trainer
 from utils.utils import print_eval_acc, print_train_acc, load_with_default_yaml, save_dict_as_one_line_csv
@@ -38,5 +40,6 @@ def main(working_dir, seed, train_epochs, eval_every, use_ray, ray_params, data_
 
 if __name__ == "__main__":
     param_path = sys.argv[1]
+    # 입력 받은 경로에서 yaml 파일을 통해 필요한 정보들을 읽는다.
     param_dict = load_with_default_yaml(path=param_path)
     main(**param_dict)
